@@ -25,6 +25,21 @@
         // XSSを引き起こさないコード (2)
         // document.querySelector("#result").textContent = message;
       }
+
+      const urlStr = url.searchParams.get("url");
+      if (urlStr) {
+        const linkUrl = new URL(urlStr, url.origin);
+
+        // URLスキームを指定しない場合にXSSを引き起こすコード
+        // document.querySelector("#link").href = linkUrl;
+
+        // URLスキームを指定した場合の対応策
+        if (linkUrl.protocol === "http:" || linkUrl.protocol === "https:") {
+          document.querySelector("#link").href = linkUrl;
+        } else {
+          console.warn("指定したプロトコル以外のURLです。");
+        }
+      }
     </script>
   </body>
 </html>
