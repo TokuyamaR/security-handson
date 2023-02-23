@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XSS 検証用ページ</title>
+  </head>
+  <body>
+    <h1>XSS検証用ページ</h1>
+    <div id="result"></div>
+    <a href="#" id="link">リンクをクリック</a>
+
+    <script>
+      const url = new URL(location.href);
+      const message = url.searchParams.get("message");
+      if (message) {
+        // XSSを引き起こすコード
+        // document.getElementById("result").innerHTML = message;
+
+        // XSSを引き起こさないコード (1)
+        const textNode = document.createTextNode(message);
+        document.getElementById("result").appendChild(textNode);
+
+        // XSSを引き起こさないコード (2)
+        // document.querySelector("#result").textContent = message;
+      }
+    </script>
+  </body>
+</html>
