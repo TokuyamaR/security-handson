@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>XSS 検証用ページ</title>
+    <script src="./purify.js"></script>
+  </head>
+  <body>
+    <h1>XSS検証用ページ</h1>
+    <div id="result"></div>
+    <a href="#" id="link">リンクをクリック</a>
+
+    <script>
+      const url = new URL(location.href);
+      const message = url.searchParams.get("message");
+      if (message) {
+        // XSSを引き起こすコード
+        // document.getElementById("result").innerHTML = message;
+
+        // XSSを引き起こさないコード (1)
+        // const textNode = document.createTextNode(message);
+        // document.getElementById("result").appendChild(textNode);
+
+        // XSSを引き起こさないコード (2)
+        // document.querySelector("#result").textContent = message;
+
+        // XSSを引き起こさないコード (3) - purify.js を用いた例 -
+        const sanitizedMessage = DOMPurify.sanitize(message);
+        document.getElementById("result").innerHTML = sanitizedMessage;
+      }
+
+      const urlStr = url.searchParams.get("url");
+      if (urlStr) {
+        const linkUrl = new URL(urlStr, url.origin);
+
+        // URLスキームを指定しない場合にXSSを引き起こすコード
+        // document.querySelector("#link").href = linkUrl;
+
+        // URLスキームを指定した場合の対応策
+        if (linkUrl.protocol === "http:" || linkUrl.protocol === "https:") {
+          document.querySelector("#link").href = linkUrl;
+        } else {
+          console.warn("指定したプロトコル以外のURLです。");
+        }
+      }
+    </script>
+  </body>
+</html>
