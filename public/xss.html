@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>XSS 検証用ページ</title>
+    <script src="./purify.js"></script>
   </head>
   <body>
     <h1>XSS検証用ページ</h1>
@@ -19,11 +20,15 @@
         // document.getElementById("result").innerHTML = message;
 
         // XSSを引き起こさないコード (1)
-        const textNode = document.createTextNode(message);
-        document.getElementById("result").appendChild(textNode);
+        // const textNode = document.createTextNode(message);
+        // document.getElementById("result").appendChild(textNode);
 
         // XSSを引き起こさないコード (2)
         // document.querySelector("#result").textContent = message;
+
+        // XSSを引き起こさないコード (3) - purify.js を用いた例 -
+        const sanitizedMessage = DOMPurify.sanitize(message);
+        document.getElementById("result").innerHTML = sanitizedMessage;
       }
 
       const urlStr = url.searchParams.get("url");
